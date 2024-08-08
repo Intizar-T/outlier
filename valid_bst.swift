@@ -2,16 +2,14 @@ import CoreData
 import SwiftUI
 
 struct ErrorAlert: View {
-    @State private var isShowingAlert = false
+    @Binding var isShowingAlert: Bool
     let errorMessage: String
 
     var body: some View {
-        Button("Trigger Alert", action: {
-            isShowingAlert = true
-        })
-        .alert(isPresented: $isShowingAlert) {
-            Alert(title: Text("Error Occurred!"), message: Text(self.errorMessage), dismissButton: .default(Text("OK")))
-        }
+        EmptyView()
+            .alert(isPresented: $isShowingAlert) {
+                Alert(title: Text("Error Occurred!"), message: Text(self.errorMessage), dismissButton: .default(Text("OK")))
+            }
     }
 }
 
@@ -88,9 +86,7 @@ struct AddOptionTrade: View {
             .disabled(viewModel.ticker.isEmpty || viewModel.strikePrice.isEmpty || viewModel.buyPrice.isEmpty)
         }
         .navigationTitle("Add Option Trade")
-        .alert(isPresented: $showErrorAlert) {
-            Alert(title: Text("Error Occurred!"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-        }
+        .overlay(ErrorAlert(isShowingAlert: $showErrorAlert, errorMessage: errorMessage))
     }
 }
 
@@ -127,9 +123,7 @@ struct AddFutureTrade: View {
             .disabled(viewModel.ticker.isEmpty || viewModel.tickSize.isEmpty || viewModel.quantity.isEmpty || viewModel.buyPrice.isEmpty)
         }
         .navigationTitle("Add Future Trade")
-        .alert(isPresented: $showErrorAlert) {
-            Alert(title: Text("Error Occurred!"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-        }
+        .overlay(ErrorAlert(isShowingAlert: $showErrorAlert, errorMessage: errorMessage))
     }
 }
 
@@ -164,9 +158,7 @@ struct AddStockTrade: View {
             .disabled(viewModel.ticker.isEmpty || viewModel.quantity.isEmpty || viewModel.buyPrice.isEmpty)
         }
         .navigationTitle("Add Stock Trade")
-        .alert(isPresented: $showErrorAlert) {
-            Alert(title: Text("Error Occurred!"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-        }
+        .overlay(ErrorAlert(isShowingAlert: $showErrorAlert, errorMessage: errorMessage))
     }
 }
 
