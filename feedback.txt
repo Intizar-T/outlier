@@ -1,0 +1,4 @@
+- [Concision]: The response should include a brief introductory sentence explaining the approach taken to solve the problem. It should also provide an explanation section explaining how the core features of the function work.
+
+- [Satisfaction]: The code should have brief and descriptive inline comments that point out the main logic of the `function_name` function. These comments should point out the
+- [Satisfaction]: The response should include a few test cases demonstrating how the function behaves in various scenarios.
