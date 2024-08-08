@@ -1,32 +1,41 @@
 import CoreData
 import SwiftUI
 
+struct ErrorAlert: View {
+    @State private var isShowingAlert = false
+    let errorMessage: String
+
+    var body: some View {
+        Button("Trigger Alert", action: {
+            isShowingAlert = true
+        })
+        .alert(isPresented: $isShowingAlert) {
+            Alert(title: Text("Error Occurred!"), message: Text(self.errorMessage), dismissButton: .default(Text("OK")))
+        }
+    }
+}
+
 struct AddTrade: View {
     @State private var selectedTab = 0
-    @State private var errorMessage: String = ""
-    @State private var isShowingAlert = false
 
     var body: some View {
         TabView {
-            AddOptionTrade(viewModel: OptionTradeViewModel(), errorMessage: $errorMessage, isShowingAlert: $isShowingAlert)
+            AddOptionTrade(viewModel: OptionTradeViewModel())
                 .tabItem {
                     Image(systemName: "triangleshape")
                         .foregroundStyle(.secondary)
                     Text("Option Trade")
                 }
-            AddFutureTrade(errorMessage: $errorMessage, isShowingAlert: $isShowingAlert)
+            AddFutureTrade()
                 .tabItem {
                     Image(systemName: "calendar.badge.clock")
                     Text("Future Trade")
                 }
-            AddStockTrade(viewModel: StockTradeViewModel(), errorMessage: $errorMessage, isShowingAlert: $isShowingAlert)
+            AddStockTrade(viewModel: StockTradeViewModel())
                 .tabItem {
                     Image(systemName: "chart.bar.fill")
                     Text("Stock Trade")
                 }
-        }
-        .alert(isPresented: $isShowingAlert) {
-            Alert(title: Text("Error Occurred!"), message: Text(self.errorMessage), dismissButton: .default(Text("OK")))
         }
     }
 }
@@ -34,8 +43,8 @@ struct AddTrade: View {
 struct AddOptionTrade: View {
     @ObservedObject var viewModel: OptionTradeViewModel
     @Environment(\.dismiss) var dismiss
-    @Binding var errorMessage: String
-    @Binding var isShowingAlert: Bool
+    @State private var errorMessage: String = ""
+    @State private var showErrorAlert: Bool = false
 
     var body: some View {
         Form {
@@ -69,25 +78,27 @@ struct AddOptionTrade: View {
             }
 
             Button("Save Trade") {
-                if viewModel.ticker.isEmpty || viewModel.strikePrice.isEmpty || viewModel.buyPrice.isEmpty {
-                    errorMessage = "Please fill in all required fields."
-                    isShowingAlert = true
-                } else {
-                    viewModel.saveTrade()
+                if viewModel.saveTrade() {
                     dismiss() // Dismiss the view after saving
+                } else {
+                    errorMessage = "Failed to save trade. Please check your inputs."
+                    showErrorAlert = true
                 }
             }
             .disabled(viewModel.ticker.isEmpty || viewModel.strikePrice.isEmpty || viewModel.buyPrice.isEmpty)
         }
         .navigationTitle("Add Option Trade")
+        .alert(isPresented: $showErrorAlert) {
+            Alert(title: Text("Error Occurred!"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+        }
     }
 }
 
 struct AddFutureTrade: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel: FutureTradeViewModel = FutureTradeViewModel()
-    @Binding var errorMessage: String
-    @Binding var isShowingAlert: Bool
+    @State private var errorMessage: String = ""
+    @State private var showErrorAlert: Bool = false
 
     var body: some View {
         Form {
@@ -106,25 +117,27 @@ struct AddFutureTrade: View {
             }
 
             Button("Save Trade") {
-                if viewModel.ticker.isEmpty || viewModel.tickSize.isEmpty || viewModel.quantity.isEmpty || viewModel.buyPrice.isEmpty {
-                    errorMessage = "Please fill in all required fields."
-                    isShowingAlert = true
-                } else {
-                    viewModel.saveTrade()
+                if viewModel.saveTrade() {
                     dismiss() // Dismiss the view after saving
+                } else {
+                    errorMessage = "Failed to save trade. Please check your inputs."
+                    showErrorAlert = true
                 }
             }
             .disabled(viewModel.ticker.isEmpty || viewModel.tickSize.isEmpty || viewModel.quantity.isEmpty || viewModel.buyPrice.isEmpty)
         }
         .navigationTitle("Add Future Trade")
+        .alert(isPresented: $showErrorAlert) {
+            Alert(title: Text("Error Occurred!"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+        }
     }
 }
 
 struct AddStockTrade: View {
     @ObservedObject var viewModel: StockTradeViewModel
     @Environment(\.dismiss) var dismiss
-    @Binding var errorMessage: String
-    @Binding var isShowingAlert: Bool
+    @State private var errorMessage: String = ""
+    @State private var showErrorAlert: Bool = false
 
     var body: some View {
         Form {
@@ -141,17 +154,19 @@ struct AddStockTrade: View {
             }
 
             Button("Save Trade") {
-                if viewModel.ticker.isEmpty || viewModel.quantity.isEmpty || viewModel.buyPrice.isEmpty {
-                    errorMessage = "Please fill in all required fields."
-                    isShowingAlert = true
-                } else {
-                    viewModel.saveTrade()
+                if viewModel.saveTrade() {
                     dismiss() // Dismiss the view after saving
+                } else {
+                    errorMessage = "Failed to save trade. Please check your inputs."
+                    showErrorAlert = true
                 }
             }
             .disabled(viewModel.ticker.isEmpty || viewModel.quantity.isEmpty || viewModel.buyPrice.isEmpty)
         }
         .navigationTitle("Add Stock Trade")
+        .alert(isPresented: $showErrorAlert) {
+            Alert(title: Text("Error Occurred!"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+        }
     }
 }
 
