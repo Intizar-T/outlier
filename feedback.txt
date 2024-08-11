@@ -1,4 +1,17 @@
-- [Concision]: The response should include a brief introductory sentence explaining the approach taken to solve the problem. It should also provide an explanation section explaining how the core features of the function work.
+- [Concision]: The response should include a brief introductory sentence explaining the approach taken to solve the problem, followed by an explanation section detailing how the core features of the function work.
 
 - [Satisfaction]: The code should have brief and descriptive inline comments that point out the main logic of the `function_name` function. These comments should point out the
 - [Satisfaction]: The response should include a few test cases demonstrating how the function behaves in various scenarios.
+
+Solution #1
+- [Concision]: The explanation section could elaborate more on the core logic of each example function. Especially, integer comparison line `(int_a > int_b) - (int_a < int_b)` might not be intuitive for the user.
+- [Satisfaction]: The example codes should have brief and descriptive inline comments that point out the main logic of the `compare_ints`, `compare_strings` and `main` functions.
+- [Satisfaction]: The example arrays should be updated to include a wider variety of elements, such as negative numbers in the case of integer examples and empty strings in the case of string examples.
+
+
+Solution #2
+- [Concision]: The introduction is unnecessarily too long. The first sentence can be removed since it's not a complete sentence and doesn't add value to the response. The following sentence that starts with "In the world of C programming," can also be removed for the same reason.
+- [Concision]: The last paragraph in the "In summary" section should be removed as it doesn't add value to the response.
+- [Truthfulness]: The `nitems` parameter mentioned in the `qsort()` signature is wrongly referenced as `count`.
+- [Satisfaction]: The first example should be removed as it is inadequate and appears to be unintentional, as it's incomplete and not provided as a proper C code snippet.
+- [Satisfaction]: The code should have brief and descriptive inline comments that point out the main logic of the `compare_integers`, `compare_strings`, and `main` functions.
