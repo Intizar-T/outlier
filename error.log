@@ -1,0 +1,103 @@
+Traceback (most recent call last):
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 1, in <module>
+    from telegram_bot import TelegramBot
+  File "/Users/intizar/Intizar/outlier/code/telegram_bot.py", line 1, in <module>
+    from telegram import Bot
+ModuleNotFoundError: No module named 'telegram'
+Traceback (most recent call last):
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 1, in <module>
+    from telegram_bot import TelegramBot
+  File "/Users/intizar/Intizar/outlier/code/telegram_bot.py", line 1, in <module>
+    from telegram import Bot
+ModuleNotFoundError: No module named 'telegram'
+Traceback (most recent call last):
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 1, in <module>
+    from telegram_bot import TelegramBot
+  File "/Users/intizar/Intizar/outlier/code/telegram_bot.py", line 1, in <module>
+    from telegram import Bot
+ModuleNotFoundError: No module named 'telegram'
+Traceback (most recent call last):
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 1, in <module>
+    from telegram_bot import TelegramBot
+  File "/Users/intizar/Intizar/outlier/code/telegram_bot.py", line 1, in <module>
+    from telegram import Bot
+ModuleNotFoundError: No module named 'telegram'
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:41:16,185 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:41:16,287 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:16,447 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:16,617 - WDM - INFO - There is no [mac64] chromedriver "128.0.6613.119" for browser google-chrome "128.0.6613" in cache
+2024-09-07 01:41:16,634 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:17,034 - WDM - INFO - WebDriver version 128.0.6613.119 selected
+2024-09-07 01:41:17,040 - WDM - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/mac-arm64/chromedriver-mac-arm64.zip
+2024-09-07 01:41:17,041 - WDM - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.119/mac-arm64/chromedriver-mac-arm64.zip
+2024-09-07 01:41:17,127 - WDM - INFO - Driver downloading response is 200
+2024-09-07 01:41:17,964 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:18,221 - WDM - INFO - Driver has been saved in cache [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119]
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:41:28,076 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:41:28,160 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:28,320 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:28,516 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:41:43,787 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:41:43,866 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:44,028 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:44,197 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:41:53,998 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:41:54,080 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:54,243 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:41:54,416 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:42:04,031 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:42:04,112 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:42:04,273 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:42:04,435 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:42:14,270 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:42:14,354 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:42:14,511 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:42:14,682 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:42:25,199 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:42:25,277 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:42:25,435 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:42:25,610 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:43:46,834 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:43:46,913 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:43:47,079 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:43:47,249 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:43:57,250 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:43:57,330 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:43:57,490 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:43:57,718 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:44:07,630 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:44:07,709 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:44:07,870 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:44:08,055 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:44:18,333 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:44:18,411 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:44:18,567 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:44:18,730 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-07 01:46:50,720 - WDM - INFO - ====== WebDriver manager ======
+2024-09-07 01:46:50,799 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:46:50,961 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-09-07 01:46:51,130 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
