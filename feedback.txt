@@ -15,3 +15,7 @@ Solution #2
 - [Truthfulness]: The `nitems` parameter mentioned in the `qsort()` signature is wrongly referenced as `count`.
 - [Satisfaction]: The first example should be removed as it is inadequate and appears to be unintentional, as it's incomplete and not provided as a proper C code snippet.
 - [Satisfaction]: The code should have brief and descriptive inline comments that point out the main logic of the `compare_integers`, `compare_strings`, and `main` functions.
+
+- [Instruction Following]: The response should be rewritten in Swift since that's what the tasks requests.
+- [Satisfaction]: The response should include a few more test cases, especially edge cases like base case or negative input, to demonstrate function robustness.
+- [Satisfaction]: Fluff words, such as "Certainly!", should be removed.

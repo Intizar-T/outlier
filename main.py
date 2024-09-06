@@ -1,34 +1,30 @@
-def sieve_of_eratosthenes(n):
-    """
-    Find all prime numbers up to n using the Sieve of Eratosthenes algorithm.
+from telegram_bot import TelegramBot
+import asyncio
 
-    Parameters:
-    n (int): The upper limit (inclusive) to find prime numbers.
+def main():
+    telegram_bot = TelegramBot()
+    asyncio.run(telegram_bot.send_message("Hello, World!"))
 
-    Returns:
-    list: A list of prime numbers up to n.
-    """
-    if n < 2:
-        return []
+if __name__ == "__main__":
+    main()
 
-    # Initialize a list to track prime status of numbers from 0 to n
-    is_prime = [True] * (n + 1)
-    is_prime[0] = is_prime[1] = False  # 0 and 1 are not prime numbers
+# import requests
 
-    # Start with the first prime number, which is 2
-    p = 2
-    while p * p <= n:
-        # If is_prime[p] is still True, then it is a prime
-        if is_prime[p]:
-            # Mark all multiples of p as not prime
-            for multiple in range(p * p, n + 1, p):
-                is_prime[multiple] = False
-        p += 1
+# # Replace 'YOUR_BOT_TOKEN' with your actual bot token
+# bot_token = '6793894589:AAGiM50exttvWeDgguVshcvaMZX6Zsn6o_8'
+# url = f'https://api.telegram.org/bot{bot_token}/getUpdates'
 
-    # Collect all prime numbers
-    primes = [num for num, prime in enumerate(is_prime) if prime]
-    return primes
+# response = requests.get(url)
+# data = response.json()
 
-# Example usage:
-n = 31
-print(f"Prime numbers up to {n}: {sieve_of_eratosthenes(n)}")
+# # Extract the group ID from the response
+# if 'result' in data:
+#     for update in data['result']:
+#         if 'message' in update:
+#             chat_id = update['message']['chat']['id']
+#             chat_type = update['message']['chat']['type']
+#             if chat_type == 'group' or chat_type == 'supergroup':
+#                 print(f"Group ID: {chat_id}")
+#                 break
+# else:
+#     print("No updates found")
