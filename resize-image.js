@@ -1,7 +1,6 @@
-const sharp = require("sharp");
+const { createCanvas, loadImage } = require("canvas");
 const readline = require("readline");
 
-// Create an interface to get input from the console
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -9,14 +8,19 @@ const rl = readline.createInterface({
 
 async function processImage(imagePath) {
   try {
-    const image = sharp(imagePath);
-    const metadata = await image.metadata();
-    const resizedImageBuffer = await image.resize(10, 10).toBuffer();
-    const base64Image = resizedImageBuffer.toString("base64");
-    const mimeType = metadata.format
-      ? `image/${metadata.format}`
-      : "image/jpeg";
-    const dataUrl = `data:${mimeType};base64,${base64Image}`;
+    // Load the image
+    const img = await loadImage(imagePath);
+
+    // Create a canvas with the desired dimensions
+    const canvas = createCanvas(10, 10);
+    const ctx = canvas.getContext("2d");
+
+    // Draw the image onto the canvas, resizing it in the process
+    ctx.drawImage(img, 0, 0, 10, 10);
+
+    // Get the data URL from the canvas
+    const dataUrl = canvas.toDataURL();
+
     return dataUrl;
   } catch (error) {
     console.error("Error processing image:", error);
@@ -28,8 +32,8 @@ async function processImage(imagePath) {
 rl.question("Please enter the absolute path to the image: ", (imagePath) => {
   processImage(imagePath).then((dataUrl) => {
     if (dataUrl) {
-      console.log("Data URL:", dataUrl);
+      console.info("Data URL:", dataUrl);
     }
-    rl.close(); // Close the readline interface when done
+    rl.close(); // Close the readline interface
   });
 });
