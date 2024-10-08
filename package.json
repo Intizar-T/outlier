@@ -1,0 +1,11 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "```bash sudo launchctl unload /Library/LaunchDaemons/com.outlier.eqcheck.plist sudo launchctl load /Library/LaunchDaemons/com.outlier.eqcheck.plist ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

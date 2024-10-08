@@ -101,3 +101,220 @@ ModuleNotFoundError: No module named 'telegram'
 2024-09-07 01:46:50,799 - WDM - INFO - Get LATEST chromedriver version for google-chrome
 2024-09-07 01:46:50,961 - WDM - INFO - Get LATEST chromedriver version for google-chrome
 2024-09-07 01:46:51,130 - WDM - INFO - Driver [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.119/chromedriver-mac-arm64/chromedriver] found in cache
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-10 10:03:24,154 - WDM - INFO - ====== WebDriver manager ======
+2024-09-10 10:03:24,469 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+Traceback (most recent call last):
+  File "/Library/Python/3.9/site-packages/urllib3/connection.py", line 196, in _new_conn
+    sock = connection.create_connection(
+  File "/Library/Python/3.9/site-packages/urllib3/util/connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "/Library/Python/3.9/site-packages/urllib3/connection.py", line 615, in connect
+    self.sock = sock = self._new_conn()
+  File "/Library/Python/3.9/site-packages/urllib3/connection.py", line 203, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x104aedc10>: Failed to resolve 'googlechromelabs.github.io' ([Errno 8] nodename nor servname provided, or not known)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Python/3.9/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+  File "/Library/Python/3.9/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='googlechromelabs.github.io', port=443): Max retries exceeded with url: /chrome-for-testing/latest-patch-versions-per-build.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x104aedc10>: Failed to resolve 'googlechromelabs.github.io' ([Errno 8] nodename nor servname provided, or not known)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/http.py", line 32, in get
+    resp = requests.get(
+  File "/Library/Python/3.9/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "/Library/Python/3.9/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/Library/Python/3.9/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Library/Python/3.9/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/Library/Python/3.9/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='googlechromelabs.github.io', port=443): Max retries exceeded with url: /chrome-for-testing/latest-patch-versions-per-build.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x104aedc10>: Failed to resolve 'googlechromelabs.github.io' ([Errno 8] nodename nor servname provided, or not known)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 42, in <module>
+    main()
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 15, in main
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options())
+  File "/Library/Python/3.9/site-packages/webdriver_manager/chrome.py", line 40, in install
+    driver_path = self._get_driver_binary_path(self.driver)
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/manager.py", line 35, in _get_driver_binary_path
+    binary_path = self._cache_manager.find_driver(driver)
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/driver_cache.py", line 107, in find_driver
+    driver_version = self.get_cache_key_driver_version(driver)
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/driver_cache.py", line 154, in get_cache_key_driver_version
+    return driver.get_driver_version_to_download()
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/driver.py", line 48, in get_driver_version_to_download
+    return self.get_latest_release_version()
+  File "/Library/Python/3.9/site-packages/webdriver_manager/drivers/chrome.py", line 59, in get_latest_release_version
+    response = self._http_client.get(url)
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/http.py", line 35, in get
+    raise exceptions.ConnectionError(f"Could not reach host. Are you offline?")
+requests.exceptions.ConnectionError: Could not reach host. Are you offline?
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-09-27 21:39:13,745 - WDM - INFO - ====== WebDriver manager ======
+2024-09-27 21:39:19,197 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+Traceback (most recent call last):
+  File "/Library/Python/3.9/site-packages/urllib3/connection.py", line 196, in _new_conn
+    sock = connection.create_connection(
+  File "/Library/Python/3.9/site-packages/urllib3/util/connection.py", line 60, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 789, in urlopen
+    response = self._make_request(
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 490, in _make_request
+    raise new_e
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 466, in _make_request
+    self._validate_conn(conn)
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 1095, in _validate_conn
+    conn.connect()
+  File "/Library/Python/3.9/site-packages/urllib3/connection.py", line 615, in connect
+    self.sock = sock = self._new_conn()
+  File "/Library/Python/3.9/site-packages/urllib3/connection.py", line 203, in _new_conn
+    raise NameResolutionError(self.host, self, e) from e
+urllib3.exceptions.NameResolutionError: <urllib3.connection.HTTPSConnection object at 0x106729ca0>: Failed to resolve 'googlechromelabs.github.io' ([Errno 8] nodename nor servname provided, or not known)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Library/Python/3.9/site-packages/requests/adapters.py", line 667, in send
+    resp = conn.urlopen(
+  File "/Library/Python/3.9/site-packages/urllib3/connectionpool.py", line 843, in urlopen
+    retries = retries.increment(
+  File "/Library/Python/3.9/site-packages/urllib3/util/retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='googlechromelabs.github.io', port=443): Max retries exceeded with url: /chrome-for-testing/latest-patch-versions-per-build.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x106729ca0>: Failed to resolve 'googlechromelabs.github.io' ([Errno 8] nodename nor servname provided, or not known)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/http.py", line 32, in get
+    resp = requests.get(
+  File "/Library/Python/3.9/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "/Library/Python/3.9/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/Library/Python/3.9/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Library/Python/3.9/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/Library/Python/3.9/site-packages/requests/adapters.py", line 700, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='googlechromelabs.github.io', port=443): Max retries exceeded with url: /chrome-for-testing/latest-patch-versions-per-build.json (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x106729ca0>: Failed to resolve 'googlechromelabs.github.io' ([Errno 8] nodename nor servname provided, or not known)"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 42, in <module>
+    main()
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 15, in main
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options())
+  File "/Library/Python/3.9/site-packages/webdriver_manager/chrome.py", line 40, in install
+    driver_path = self._get_driver_binary_path(self.driver)
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/manager.py", line 35, in _get_driver_binary_path
+    binary_path = self._cache_manager.find_driver(driver)
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/driver_cache.py", line 107, in find_driver
+    driver_version = self.get_cache_key_driver_version(driver)
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/driver_cache.py", line 154, in get_cache_key_driver_version
+    return driver.get_driver_version_to_download()
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/driver.py", line 48, in get_driver_version_to_download
+    return self.get_latest_release_version()
+  File "/Library/Python/3.9/site-packages/webdriver_manager/drivers/chrome.py", line 59, in get_latest_release_version
+    response = self._http_client.get(url)
+  File "/Library/Python/3.9/site-packages/webdriver_manager/core/http.py", line 35, in get
+    raise exceptions.ConnectionError(f"Could not reach host. Are you offline?")
+requests.exceptions.ConnectionError: Could not reach host. Are you offline?
+/Library/Python/3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2024-10-06 22:38:58,780 - WDM - INFO - ====== WebDriver manager ======
+2024-10-06 22:39:00,274 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-06 22:39:00,443 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-06 22:39:00,789 - WDM - INFO - There is no [mac64] chromedriver "128.0.6613.137" for browser google-chrome "128.0.6613" in cache
+2024-10-06 22:39:00,806 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-06 22:39:01,222 - WDM - INFO - WebDriver version 128.0.6613.137 selected
+2024-10-06 22:39:01,226 - WDM - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.137/mac-arm64/chromedriver-mac-arm64.zip
+2024-10-06 22:39:01,226 - WDM - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.137/mac-arm64/chromedriver-mac-arm64.zip
+2024-10-06 22:39:01,410 - WDM - INFO - Driver downloading response is 200
+2024-10-06 22:39:03,233 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-06 22:39:03,478 - WDM - INFO - Driver has been saved in cache [/var/root/.wdm/drivers/chromedriver/mac64/128.0.6613.137]
+Traceback (most recent call last):
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 42, in <module>
+    main()
+  File "/Users/intizar/Intizar/outlier/code/main.py", line 15, in main
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options())
+  File "/Library/Python/3.9/site-packages/selenium/webdriver/chrome/webdriver.py", line 45, in __init__
+    super().__init__(
+  File "/Library/Python/3.9/site-packages/selenium/webdriver/chromium/webdriver.py", line 66, in __init__
+    super().__init__(command_executor=executor, options=options)
+  File "/Library/Python/3.9/site-packages/selenium/webdriver/remote/webdriver.py", line 212, in __init__
+    self.start_session(capabilities)
+  File "/Library/Python/3.9/site-packages/selenium/webdriver/remote/webdriver.py", line 299, in start_session
+    response = self.execute(Command.NEW_SESSION, caps)["value"]
+  File "/Library/Python/3.9/site-packages/selenium/webdriver/remote/webdriver.py", line 354, in execute
+    self.error_handler.check_response(response)
+  File "/Library/Python/3.9/site-packages/selenium/webdriver/remote/errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.WebDriverException: Message: disconnected: Unable to receive message from renderer
+  (failed to check if window was closed: disconnected: not connected to DevTools)
+  (Session info: chrome=128.0.6613.120)
+Stacktrace:
+0   chromedriver                        0x0000000103401208 cxxbridge1$str$ptr + 1927396
+1   chromedriver                        0x00000001033f966c cxxbridge1$str$ptr + 1895752
+2   chromedriver                        0x0000000102ff4808 cxxbridge1$string$len + 89564
+3   chromedriver                        0x0000000102fdf9c4 cxxbridge1$string$len + 3992
+4   chromedriver                        0x0000000102fddae8 core::str::slice_error_fail::h6c488016ada29016 + 61084
+5   chromedriver                        0x0000000102fde18c core::str::slice_error_fail::h6c488016ada29016 + 62784
+6   chromedriver                        0x0000000102ff527c cxxbridge1$string$len + 92240
+7   chromedriver                        0x0000000102fcf388 core::str::slice_error_fail::h6c488016ada29016 + 1852
+8   chromedriver                        0x0000000102fcee88 core::str::slice_error_fail::h6c488016ada29016 + 572
+9   chromedriver                        0x00000001030628b4 cxxbridge1$string$len + 540296
+10  chromedriver                        0x000000010302d698 cxxbridge1$string$len + 322668
+11  chromedriver                        0x000000010302e310 cxxbridge1$string$len + 325860
+12  chromedriver                        0x00000001033c7e78 cxxbridge1$str$ptr + 1693012
+13  chromedriver                        0x00000001033cc77c cxxbridge1$str$ptr + 1711704
+14  chromedriver                        0x00000001033ad3ec cxxbridge1$str$ptr + 1583816
+15  chromedriver                        0x00000001033cd04c cxxbridge1$str$ptr + 1713960
+16  chromedriver                        0x000000010339dfc8 cxxbridge1$str$ptr + 1521316
+17  chromedriver                        0x00000001033eab68 cxxbridge1$str$ptr + 1835588
+18  chromedriver                        0x00000001033eace4 cxxbridge1$str$ptr + 1835968
+19  chromedriver                        0x00000001033f9308 cxxbridge1$str$ptr + 1894884
+20  libsystem_pthread.dylib             0x000000019c216f94 _pthread_start + 136
+21  libsystem_pthread.dylib             0x000000019c211d34 thread_start + 8
+
