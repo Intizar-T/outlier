@@ -1,125 +1,106 @@
--- Table: products
-CREATE TABLE products (
-    product_id SERIAL PRIMARY KEY,
-    product_name VARCHAR(255) NOT NULL,
-    category_id INT,
-    subcategory_id INT
-);
-
--- Table: categories
+-- Create tables
 CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
-    category_name VARCHAR(255) NOT NULL
+    category_name VARCHAR(100) NOT NULL
 );
 
--- Table: subcategories
 CREATE TABLE subcategories (
     subcategory_id SERIAL PRIMARY KEY,
-    subcategory_name VARCHAR(255) NOT NULL,
-    category_id INT REFERENCES categories(category_id)
+    category_id INTEGER NOT NULL,
+    subcategory_name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
 
--- Table: order_items
-CREATE TABLE order_items (
-    order_item_id SERIAL PRIMARY KEY,
-    order_id INT,
-    product_id INT REFERENCES products(product_id),
-    quantity INT NOT NULL,
-    price NUMERIC(10, 2) NOT NULL
+CREATE TABLE products (
+    product_id SERIAL PRIMARY KEY,
+    product_name VARCHAR(200) NOT NULL,
+    category_id INTEGER NOT NULL,
+    subcategory_id INTEGER NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories(category_id),
+    FOREIGN KEY (subcategory_id) REFERENCES subcategories(subcategory_id)
 );
 
--- Table: orders
-CREATE TABLE orders (
-    order_id SERIAL PRIMARY KEY,
-    customer_id INT,
-    order_date DATE NOT NULL,
-    coupon_id INT
-);
-
--- Table: customers
-CREATE TABLE customers (
-    customer_id SERIAL PRIMARY KEY,
-    customer_name VARCHAR(255),
-    gender VARCHAR(10),
-    date_of_birth DATE,
-    region_id INT
-);
-
--- Table: regions
 CREATE TABLE regions (
     region_id SERIAL PRIMARY KEY,
-    region_name VARCHAR(255) NOT NULL
+    region_name VARCHAR(100) NOT NULL
 );
 
--- Table: coupons
+CREATE TABLE customers (
+    customer_id SERIAL PRIMARY KEY,
+    gender CHAR(1) NOT NULL,
+    date_of_birth DATE NOT NULL,
+    region_id INTEGER NOT NULL,
+    FOREIGN KEY (region_id) REFERENCES regions(region_id)
+);
+
 CREATE TABLE coupons (
     coupon_id SERIAL PRIMARY KEY,
-    coupon_code VARCHAR(50),
-    discount_percent NUMERIC(5, 2)
+    coupon_code VARCHAR(20) NOT NULL,
+    discount_percent DECIMAL(5,2) NOT NULL
 );
 
--- Adding Foreign Keys
-ALTER TABLE products
-ADD CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES categories (category_id),
-ADD CONSTRAINT fk_subcategory FOREIGN KEY (subcategory_id) REFERENCES subcategories (subcategory_id);
+CREATE TABLE orders (
+    order_id SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL,
+    order_date TIMESTAMP NOT NULL,
+    coupon_id INTEGER,
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (coupon_id) REFERENCES coupons(coupon_id)
+);
 
-ALTER TABLE orders
-ADD CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customers (customer_id),
-ADD CONSTRAINT fk_coupon FOREIGN KEY (coupon_id) REFERENCES coupons (coupon_id);
+CREATE TABLE order_items (
+    order_item_id SERIAL PRIMARY KEY,
+    order_id INTEGER NOT NULL,
+    product_id INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
 
-ALTER TABLE order_items
-ADD CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders (order_id),
-ADD CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES products (product_id);
+-- Create indices
+CREATE INDEX idx_products_category ON products(category_id);
+CREATE INDEX idx_products_subcategory ON products(subcategory_id);
+CREATE INDEX idx_customers_region ON customers(region_id);
+CREATE INDEX idx_orders_customer ON orders(customer_id);
+CREATE INDEX idx_orders_coupon ON orders(coupon_id);
+CREATE INDEX idx_order_items_order ON order_items(order_id);
+CREATE INDEX idx_order_items_product ON order_items(product_id);
 
-ALTER TABLE customers
-ADD CONSTRAINT fk_region FOREIGN KEY (region_id) REFERENCES regions (region_id);
+-- Insert sample data
+INSERT INTO categories (category_name) VALUES ('Electronics'), ('Clothing');
+INSERT INTO subcategories (category_id, subcategory_name) VALUES (1, 'Smartphones'), (1, 'Laptops'), (2, 'T-Shirts'), (2, 'Jeans');
+INSERT INTO products (product_name, category_id, subcategory_id) VALUES 
+    ('iPhone 12', 1, 1),
+    ('Samsung Galaxy S21', 1, 1),
+    ('MacBook Pro', 1, 2),
+    ('Dell XPS', 1, 2),
+    ('Plain White Tee', 2, 3),
+    ('Levi''s 501', 2, 4);
 
--- Adding indexes
-CREATE INDEX idx_product_id ON order_items(product_id);
-CREATE INDEX idx_order_date ON orders(order_date);
-CREATE INDEX idx_customer_id ON orders(customer_id);
+INSERT INTO regions (region_name) VALUES ('North'), ('South'), ('East'), ('West');
+INSERT INTO customers (gender, date_of_birth, region_id) VALUES 
+    ('M', '1990-01-01', 1),
+    ('F', '1985-05-15', 2),
+    ('M', '2000-12-31', 3),
+    ('F', '1975-07-20', 4);
 
--- Sample Data Insertions
--- Categories
-INSERT INTO categories (category_name) VALUES ('Electronics'), ('Books'), ('Clothing');
+INSERT INTO coupons (coupon_code, discount_percent) VALUES ('SUMMER10', 10.00), ('WELCOME20', 20.00);
 
--- Subcategories
-INSERT INTO subcategories (subcategory_name, category_id) 
-VALUES ('Mobile Phones', 1), ('Fiction', 2), ('T-Shirts', 3);
+INSERT INTO orders (customer_id, order_date, coupon_id) VALUES 
+    (1, CURRENT_DATE, 1),
+    (2, CURRENT_DATE - INTERVAL '1 day', 2),
+    (3, CURRENT_DATE - INTERVAL '2 days', NULL),
+    (4, CURRENT_DATE - INTERVAL '3 days', NULL);
 
--- Regions
-INSERT INTO regions (region_name) 
-VALUES ('North America'), ('Europe');
+INSERT INTO order_items (order_id, product_id, quantity, price) VALUES 
+    (1, 1, 1, 999.99),
+    (1, 5, 2, 19.99),
+    (2, 3, 1, 1499.99),
+    (2, 6, 1, 59.99),
+    (3, 2, 1, 899.99),
+    (3, 4, 1, 1299.99),
+    (4, 5, 3, 19.99),
+    (4, 6, 2, 59.99);
 
--- Customers (after regions are inserted)
-INSERT INTO customers (customer_name, gender, date_of_birth, region_id) 
-VALUES 
-('John Doe', 'Male', '1990-01-15', 1), 
-('Jane Doe', 'Female', '1985-03-25', 2);
-
--- Products
-INSERT INTO products (product_name, category_id, subcategory_id) 
-VALUES 
-('iPhone 14', 1, 1), 
-('Samsung Galaxy', 1, 1), 
-('The Catcher in the Rye', 2, 2), 
-('Plain White T-Shirt', 3, 3);
-
--- Orders
-INSERT INTO orders (customer_id, order_date, coupon_id) 
-VALUES 
-(1, '2024-01-10', NULL), 
-(2, '2024-01-12', 1);
-
--- Order Items
-INSERT INTO order_items (order_id, product_id, quantity, price) 
-VALUES 
-(1, 1, 2, 999.99), 
-(1, 3, 1, 19.99), 
-(2, 2, 1, 899.99);
-
--- Coupons
-INSERT INTO coupons (coupon_code, discount_percent) 
-VALUES 
-('NEWYEAR20', 20), 
-('SUMMER15', 15);
+-- Your colleague's query can be run after this point
