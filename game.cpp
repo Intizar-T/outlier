@@ -137,12 +137,117 @@ private:
     }
 };
 
+#include <iostream>
+#include <sstream>
+#include <string>
+
+// Include the original code here for testing
+
+// Redirect std::cin and std::cout for automated testing
+std::istringstream testInput;
+std::ostringstream testOutput;
+std::streambuf *cinBackup, *coutBackup;
+
+void setInput(const std::string &input) {
+    testInput.str(input);
+    cinBackup = std::cin.rdbuf();
+    std::cin.rdbuf(testInput.rdbuf());
+}
+
+void clearOutput() {
+    testOutput.str("");
+}
+
+std::string getOutput() {
+    return testOutput.str();
+}
+
+void restoreStreams() {
+    std::cin.rdbuf(cinBackup);
+    std::cout.rdbuf(coutBackup);
+}
+
 int main() {
-    Character player("Player", 100, 50, 20, 10);
-    Character enemy("Enemy", 80, 40, 15, 8);
+    // Redirect cout for testing
+    coutBackup = std::cout.rdbuf();
+    std::cout.rdbuf(testOutput.rdbuf());
 
-    Combat combat(player, enemy);
-    combat.startCombat();
+    // Test 1: Player attacks and enemy takes damage
+    {
+        Character player("Player", 100, 50, 20, 10);
+        Character enemy("Enemy", 80, 40, 15, 8);
 
+        player.attack(enemy);
+
+        assert(enemy.health == 70);
+        assert(player.stamina == 40);
+        assert(getOutput() == "Player attacks Enemy for 10 damage!\n");
+        clearOutput();
+    }
+
+    // Test 2: Player defends and defense increases temporarily
+    {
+        Character player("Player", 100, 50, 20, 10);
+        player.defend();
+
+        assert(player.defensePower == 15);
+        assert(getOutput() == "Player is defending, reducing damage for the next attack!\n");
+        clearOutput();
+    }
+
+    // Test 3: Player heals and health increases
+    {
+        Character player("Player", 100, 50, 20, 10);
+        player.stamina = 20; // Ensure player has enough stamina to heal
+        player.health = 50;
+        player.heal();
+
+        assert(player.health == 70);
+        assert(player.stamina == 5);
+        assert(getOutput() == "Player heals for 20 health!\n");
+        clearOutput();
+    }
+
+    // Test 4: Enemy defends and defense increases temporarily
+    {
+        Character enemy("Enemy", 80, 40, 15, 8);
+        enemy.defend();
+
+        assert(enemy.defensePower == 13);
+        assert(getOutput() == "Enemy is defending, reducing damage for the next attack!\n");
+        clearOutput();
+    }
+
+    // Test 5: Combat ends when one character is defeated
+    {
+        Character player("Player", 100, 50, 20, 10);
+        Character enemy("Enemy", 1, 40, 15, 8);
+
+        Combat combat(player, enemy);
+
+        setInput("1\n");
+        combat.startCombat();
+
+        assert(getOutput().find("Player has defeated Enemy!") != std::string::npos);
+        clearOutput();
+        restoreStreams();
+    }
+
+    // Test 6: Combat ends when player is defeated
+    {
+        Character player("Player", 1, 50, 20, 10);
+        Character enemy("Enemy", 80, 40, 15, 8);
+
+        Combat combat(player, enemy);
+
+        setInput("1\n");
+        combat.startCombat();
+
+        assert(getOutput().find("Enemy has defeated Player!") != std::string::npos);
+        clearOutput();
+        restoreStreams();
+    }
+
+    std::cout << "All tests passed!\n";
     return 0;
 }
