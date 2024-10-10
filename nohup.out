@@ -6,3 +6,7 @@
 2024-10-10 21:29:11,581 - WDM - INFO - Get LATEST chromedriver version for google-chrome
 2024-10-10 21:29:11,704 - WDM - INFO - Get LATEST chromedriver version for google-chrome
 2024-10-10 21:29:11,823 - WDM - INFO - Driver [/Users/intizar/.wdm/drivers/chromedriver/mac64/128.0.6613.137/chromedriver-mac-arm64/chromedriver] found in cache
+2024-10-10 21:32:42,169 - WDM - INFO - ====== WebDriver manager ======
+2024-10-10 21:32:42,246 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-10 21:32:42,367 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2024-10-10 21:32:42,490 - WDM - INFO - Driver [/Users/intizar/.wdm/drivers/chromedriver/mac64/128.0.6613.137/chromedriver-mac-arm64/chromedriver] found in cache

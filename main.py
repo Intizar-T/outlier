@@ -22,8 +22,8 @@ def main():
     while True:
         if scraper.run():
             asyncio.run(telegram_bot.send_message("Tasks! Go, go, go!"))
-        # else:
-        #     asyncio.run(telegram_bot.send_message("EQ"))
+        else:
+            asyncio.run(telegram_bot.send_message("EQ"))
         
         time.sleep(SCRAPE_INTERVAL)
 
