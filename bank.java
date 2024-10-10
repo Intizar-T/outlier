@@ -1,34 +1,17 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.time.LocalDate;
 
-class Transaction {
-    private String type;
-    private double amount;
-    private String timestamp;
-
-    public Transaction(String type, double amount) {
-        this.type = type;
-        this.amount = amount;
-        this.timestamp = java.time.LocalDateTime.now().toString();
-    }
-
-    @Override
-    public String toString() {
-        return String.format("%s: %s %.2f", timestamp, type, amount);
-    }
-}
-
-class Account {
-    private String accountNumber;
-    private double balance;
-    private List<Transaction> transactions;
+abstract class Account {
+    protected String accountNumber;
+    protected double balance;
+    protected List<String> transactionHistory;
+    protected LocalDate lastInterestDate;
 
     public Account(String accountNumber) {
         this.accountNumber = accountNumber;
         this.balance = 0.0;
-        this.transactions = new ArrayList<>();
+        this.transactionHistory = new ArrayList<>();
+        this.lastInterestDate = LocalDate.now();
     }
 
     public String getAccountNumber() {
@@ -40,97 +23,209 @@ class Account {
     }
 
     public void deposit(double amount) {
-        balance += amount;
-        transactions.add(new Transaction("Deposit", amount));
+        if (amount > 0) {
+            balance += amount;
+            transactionHistory.add("Deposited: " + amount);
+        }
     }
 
+    public abstract boolean withdraw(double amount);
+
+    public List<String> getTransactionHistory() {
+        return transactionHistory;
+    }
+
+    public abstract void applyMonthlyInterest();
+}
+
+class CheckingAccount extends Account {
+    private double overdraftLimit;
+
+    public CheckingAccount(String accountNumber, double overdraftLimit) {
+        super(accountNumber);
+        this.overdraftLimit = overdraftLimit;
+    }
+
+    @Override
     public boolean withdraw(double amount) {
-        if (balance >= amount) {
+        if (amount > 0 && balance + overdraftLimit >= amount) {
             balance -= amount;
-            transactions.add(new Transaction("Withdrawal", amount));
+            transactionHistory.add("Withdrawn: " + amount);
+            if (balance < 0) {
+                transactionHistory.add("Overdraft protection used: " + Math.abs(balance));
+            }
             return true;
         }
         return false;
     }
 
-    public List<Transaction> getTransactionHistory() {
-        return new ArrayList<>(transactions);
+    @Override
+    public void applyMonthlyInterest() {
+        // Checking accounts typically don't earn interest
+    }
+}
+
+class SavingsAccount extends Account {
+    private double interestRate;
+
+    public SavingsAccount(String accountNumber, double interestRate) {
+        super(accountNumber);
+        this.interestRate = interestRate;
+    }
+
+    @Override
+    public boolean withdraw(double amount) {
+        if (amount > 0 && balance >= amount) {
+            balance -= amount;
+            transactionHistory.add("Withdrawn: " + amount);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void applyMonthlyInterest() {
+        LocalDate currentDate = LocalDate.now();
+        if (currentDate.getMonthValue() != lastInterestDate.getMonthValue() || 
+            currentDate.getYear() != lastInterestDate.getYear()) {
+            double interest = balance * (interestRate / 12);
+            balance += interest;
+            transactionHistory.add("Monthly interest applied: " + interest);
+            lastInterestDate = currentDate;
+        }
     }
 }
 
 class User {
-    private String name;
-    private Map<String, Account> accounts;
+    private String username;
+    private String password;
+    private List<Account> accounts;
 
-    public User(String name) {
-        this.name = name;
-        this.accounts = new HashMap<>();
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.accounts = new ArrayList<>();
     }
 
-    public void addAccount(String accountNumber) {
-        accounts.put(accountNumber, new Account(accountNumber));
+    public String getUsername() {
+        return username;
     }
 
-    public boolean deposit(String accountNumber, double amount) {
-        Account account = accounts.get(accountNumber);
-        if (account != null) {
-            account.deposit(amount);
-            return true;
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
+    }
+
+    public void addAccount(Account account) {
+        accounts.add(account);
+    }
+
+    public Account getAccount(String accountNumber) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                return account;
+            }
         }
-        return false;
+        return null;
     }
 
-    public boolean withdraw(String accountNumber, double amount) {
-        Account account = accounts.get(accountNumber);
-        if (account != null) {
-            return account.withdraw(amount);
+    public double getTotalBalance() {
+        double total = 0.0;
+        for (Account account : accounts) {
+            total += account.getBalance();
         }
-        return false;
+        return total;
     }
 
     public boolean transfer(String fromAccountNumber, String toAccountNumber, double amount) {
-        Account fromAccount = accounts.get(fromAccountNumber);
-        Account toAccount = accounts.get(toAccountNumber);
-        if (fromAccount != null && toAccount != null && fromAccount.withdraw(amount)) {
-            toAccount.deposit(amount);
-            return true;
+        Account fromAccount = getAccount(fromAccountNumber);
+        Account toAccount = getAccount(toAccountNumber);
+
+        if (fromAccount != null && toAccount != null) {
+            if (fromAccount.withdraw(amount)) {
+                toAccount.deposit(amount);
+                return true;
+            }
         }
         return false;
     }
 
-    public double getBalance(String accountNumber) {
-        Account account = accounts.get(accountNumber);
-        return account != null ? account.getBalance() : -1;
-    }
-
-    public List<Transaction> getTransactionHistory(String accountNumber) {
-        Account account = accounts.get(accountNumber);
-        return account != null ? account.getTransactionHistory() : new ArrayList<>();
+    public void applyMonthlyInterestToAllAccounts() {
+        for (Account account : accounts) {
+            account.applyMonthlyInterest();
+        }
     }
 }
 
-public class BankingSystem {
+class Bank {
+    private Map<String, User> users;
+
+    public Bank() {
+        this.users = new HashMap<>();
+    }
+
+    public void addUser(String username, String password) {
+        users.put(username, new User(username, password));
+    }
+
+    public User login(String username, String password) {
+        User user = users.get(username);
+        if (user != null && user.checkPassword(password)) {
+            return user;
+        }
+        return null;
+    }
+
+    public void applyMonthlyInterestForAllUsers() {
+        for (User user : users.values()) {
+            user.applyMonthlyInterestToAllAccounts();
+        }
+    }
+}
+
+public class Main {
     public static void main(String[] args) {
-        User user = new User("John Doe");
+        Bank bank = new Bank();
+        bank.addUser("user1", "pass1");
 
-        user.addAccount("1001");
-        user.addAccount("1002");
+        User user1 = bank.login("user1", "pass1");
+        if (user1 != null) {
+            user1.addAccount(new CheckingAccount("123456", 500));
+            user1.addAccount(new SavingsAccount("789101", 0.05)); // 5% annual interest rate
 
-        user.deposit("1001", 1000);
-        user.deposit("1002", 500);
+            Account checkingAccount = user1.getAccount("123456");
+            Account savingsAccount = user1.getAccount("789101");
 
-        System.out.println("Account 1001 balance: " + user.getBalance("1001"));
-        System.out.println("Account 1002 balance: " + user.getBalance("1002"));
+            checkingAccount.deposit(1000);
+            savingsAccount.deposit(2000);
 
-        user.withdraw("1001", 200);
-        user.transfer("1002", "1001", 300);
+            System.out.println("Checking balance: " + checkingAccount.getBalance());
+            System.out.println("Savings balance: " + savingsAccount.getBalance());
 
-        System.out.println("Account 1001 balance: " + user.getBalance("1001"));
-        System.out.println("Account 1002 balance: " + user.getBalance("1002"));
+            checkingAccount.withdraw(1200);
+            savingsAccount.withdraw(500);
 
-        System.out.println("Transaction history for account 1001:");
-        for (Transaction transaction : user.getTransactionHistory("1001")) {
-            System.out.println(transaction);
+            System.out.println("Checking balance after withdrawal: " + checkingAccount.getBalance());
+            System.out.println("Savings balance after withdrawal: " + savingsAccount.getBalance());
+
+            // Simulate passing of a month
+            bank.applyMonthlyInterestForAllUsers();
+
+            System.out.println("Checking balance after a month: " + checkingAccount.getBalance());
+            System.out.println("Savings balance after a month: " + savingsAccount.getBalance());
+
+            System.out.println("Checking transaction history:");
+            for (String transaction : checkingAccount.getTransactionHistory()) {
+                System.out.println(transaction);
+            }
+
+            System.out.println("Savings transaction history:");
+            for (String transaction : savingsAccount.getTransactionHistory()) {
+                System.out.println(transaction);
+            }
+
+            System.out.println("Total balance: " + user1.getTotalBalance());
+        } else {
+            System.out.println("Login failed");
         }
     }
 }
