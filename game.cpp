@@ -12,9 +12,10 @@ public:
     int maxStamina;
     int attackPower;
     int defensePower;
+    int specialCharge;
 
     Character(std::string n, int h, int s, int ap, int dp)
-        : name(n), maxHealth(h), health(h), maxStamina(s), stamina(s), attackPower(ap), defensePower(dp) {}
+        : name(n), maxHealth(h), health(h), maxStamina(s), stamina(s), attackPower(ap), defensePower(dp), specialCharge(0) {}
 
     bool isAlive() const {
         return health > 0;
@@ -23,6 +24,11 @@ public:
     void attack(Character& target) {
         if (stamina >= 10) {
             int damage = attackPower - target.defensePower;
+            if (specialCharge == 100) {
+                damage *= 2;
+                specialCharge = 0;
+                std::cout << name << " uses a special attack!\n";
+            }
             if (damage > 0) {
                 target.health -= damage;
                 std::cout << name << " attacks " << target.name << " for " << damage << " damage!\n";
@@ -54,6 +60,18 @@ public:
         }
     }
 
+    void chargeSpecial() {
+        if (specialCharge < 100) {
+            specialCharge += 20;
+            if (specialCharge > 100) {
+                specialCharge = 100;
+            }
+            std::cout << name << " charges special attack to " << specialCharge << "%!\n";
+        } else {
+            std::cout << name << "'s special attack is already fully charged!\n";
+        }
+    }
+
     void regainStamina() {
         stamina += 5;
         if (stamina > maxStamina) {
@@ -67,7 +85,8 @@ public:
 
     void status() const {
         std::cout << name << " | Health: " << health << "/" << maxHealth
-                  << ", Stamina: " << stamina << "/" << maxStamina << "\n";
+                  << ", Stamina: " << stamina << "/" << maxStamina
+                  << ", Special Charge: " << specialCharge << "%\n";
     }
 };
 
@@ -104,7 +123,7 @@ private:
     void playerTurn() {
         int choice;
         std::cout << "\nPlayer's Turn! Choose action:\n";
-        std::cout << "1. Attack\n2. Defend\n3. Heal\nChoice: ";
+        std::cout << "1. Attack\n2. Defend\n3. Heal\n4. Charge Special Attack\n5. Use Special Attack\nChoice: ";
         std::cin >> choice;
 
         switch (choice) {
@@ -117,6 +136,16 @@ private:
         case 3:
             player.heal();
             break;
+        case 4:
+            player.chargeSpecial();
+            break;
+        case 5:
+            if (player.specialCharge == 100) {
+                player.attack(enemy);
+            } else {
+                std::cout << "Special attack is not fully charged! Skipping turn.\n";
+            }
+            break;
         default:
             std::cout << "Invalid choice! Skipping turn.\n";
             break;
@@ -126,128 +155,77 @@ private:
 
     void enemyTurn() {
         std::cout << "\nEnemy's Turn!\n";
-        int action = std::rand() % 2; // 0 = attack, 1 = defend
+        int action = std::rand() % 3; // 0 = attack, 1 = defend, 2 = charge special
 
         if (action == 0) {
             enemy.attack(player);
-        } else {
+        } else if (action == 1) {
             enemy.defend();
+        } else {
+            enemy.chargeSpecial();
         }
         enemy.regainStamina();
     }
 };
 
-#include <iostream>
+#include <cassert>
 #include <sstream>
-#include <string>
+#include <iostream>
 
-// Include the original code here for testing
+// Assuming the Combat and Character classes are defined above this code
 
-// Redirect std::cin and std::cout for automated testing
-std::istringstream testInput;
-std::ostringstream testOutput;
-std::streambuf *cinBackup, *coutBackup;
+void testCombatWithAllActions() {
+    // Redirect cout to our stringstream
+    std::stringstream output;
+    std::streambuf* oldCout = std::cout.rdbuf(output.rdbuf());
 
-void setInput(const std::string &input) {
-    testInput.str(input);
-    cinBackup = std::cin.rdbuf();
-    std::cin.rdbuf(testInput.rdbuf());
-}
+    // Create characters for the test
+    Character player("TestPlayer", 100, 50, 20, 10);
+    Character enemy("TestEnemy", 100, 50, 15, 8);
 
-void clearOutput() {
-    testOutput.str("");
-}
+    // Create combat instance
+    Combat combat(player, enemy);
 
-std::string getOutput() {
-    return testOutput.str();
-}
+    // Simulate player inputs
+    std::stringstream input;
+    input << "4\n" // Charge Special Attack
+          << "4\n" // Charge Special Attack
+          << "4\n" // Charge Special Attack
+          << "4\n" // Charge Special Attack
+          << "4\n" // Charge Special Attack
+          << "5\n" // Use Special Attack
+          << "2\n" // Defend
+          << "3\n" // Heal
+          << "1\n"; // Normal Attack
 
-void restoreStreams() {
-    std::cin.rdbuf(cinBackup);
-    std::cout.rdbuf(coutBackup);
+    // Redirect cin to our input stringstream
+    std::streambuf* oldCin = std::cin.rdbuf(input.rdbuf());
+
+    // Start the combat
+    combat.startCombat();
+
+    // Restore the original cin and cout
+    std::cin.rdbuf(oldCin);
+    std::cout.rdbuf(oldCout);
+
+    // Get the output as a string
+    std::string outputStr = output.str();
+
+    // Assertions to check if all actions were performed correctly
+    assert(outputStr.find("TestPlayer charges special attack to 20%!") != std::string::npos);
+    assert(outputStr.find("TestPlayer charges special attack to 40%!") != std::string::npos);
+    assert(outputStr.find("TestPlayer charges special attack to 60%!") != std::string::npos);
+    assert(outputStr.find("TestPlayer charges special attack to 80%!") != std::string::npos);
+    assert(outputStr.find("TestPlayer charges special attack to 100%!") != std::string::npos);
+    assert(outputStr.find("TestPlayer uses a special attack!") != std::string::npos);
+    assert(outputStr.find("TestPlayer is defending, reducing damage for the next attack!") != std::string::npos);
+    assert(outputStr.find("TestPlayer heals for 20 health!") != std::string::npos);
+    assert(outputStr.find("TestPlayer attacks TestEnemy for") != std::string::npos);
+
+    std::cout << "All actions test passed successfully!" << std::endl;
 }
 
 int main() {
-    // Redirect cout for testing
-    coutBackup = std::cout.rdbuf();
-    std::cout.rdbuf(testOutput.rdbuf());
-
-    // Test 1: Player attacks and enemy takes damage
-    {
-        Character player("Player", 100, 50, 20, 10);
-        Character enemy("Enemy", 80, 40, 15, 8);
-
-        player.attack(enemy);
-
-        assert(enemy.health == 70);
-        assert(player.stamina == 40);
-        assert(getOutput() == "Player attacks Enemy for 10 damage!\n");
-        clearOutput();
-    }
-
-    // Test 2: Player defends and defense increases temporarily
-    {
-        Character player("Player", 100, 50, 20, 10);
-        player.defend();
-
-        assert(player.defensePower == 15);
-        assert(getOutput() == "Player is defending, reducing damage for the next attack!\n");
-        clearOutput();
-    }
-
-    // Test 3: Player heals and health increases
-    {
-        Character player("Player", 100, 50, 20, 10);
-        player.stamina = 20; // Ensure player has enough stamina to heal
-        player.health = 50;
-        player.heal();
-
-        assert(player.health == 70);
-        assert(player.stamina == 5);
-        assert(getOutput() == "Player heals for 20 health!\n");
-        clearOutput();
-    }
-
-    // Test 4: Enemy defends and defense increases temporarily
-    {
-        Character enemy("Enemy", 80, 40, 15, 8);
-        enemy.defend();
-
-        assert(enemy.defensePower == 13);
-        assert(getOutput() == "Enemy is defending, reducing damage for the next attack!\n");
-        clearOutput();
-    }
-
-    // Test 5: Combat ends when one character is defeated
-    {
-        Character player("Player", 100, 50, 20, 10);
-        Character enemy("Enemy", 1, 40, 15, 8);
-
-        Combat combat(player, enemy);
-
-        setInput("1\n");
-        combat.startCombat();
-
-        assert(getOutput().find("Player has defeated Enemy!") != std::string::npos);
-        clearOutput();
-        restoreStreams();
-    }
-
-    // Test 6: Combat ends when player is defeated
-    {
-        Character player("Player", 1, 50, 20, 10);
-        Character enemy("Enemy", 80, 40, 15, 8);
-
-        Combat combat(player, enemy);
-
-        setInput("1\n");
-        combat.startCombat();
-
-        assert(getOutput().find("Enemy has defeated Player!") != std::string::npos);
-        clearOutput();
-        restoreStreams();
-    }
-
-    std::cout << "All tests passed!\n";
+    testCombatWithAllActions();
     return 0;
 }

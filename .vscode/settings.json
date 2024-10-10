@@ -4,5 +4,9 @@
   "[swift]": {
     "editor.defaultFormatter": "fnando.linter",
     "editor.formatOnSave": true
+  },
+  "files.associations": {
+    "ostream": "cpp",
+    "iostream": "cpp"
   }
 }
