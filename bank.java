@@ -35,7 +35,7 @@ abstract class Account {
         return transactionHistory;
     }
 
-    public abstract void applyMonthlyInterest();
+    public abstract void endOfMonth();
 }
 
 class CheckingAccount extends Account {
@@ -52,7 +52,7 @@ class CheckingAccount extends Account {
             balance -= amount;
             transactionHistory.add("Withdrawn: " + amount);
             if (balance < 0) {
-                transactionHistory.add("Overdraft protection used: " + Math.abs(balance));
+                transactionHistory.add("Overdraft used: " + Math.abs(balance));
             }
             return true;
         }
@@ -60,8 +60,8 @@ class CheckingAccount extends Account {
     }
 
     @Override
-    public void applyMonthlyInterest() {
-        // Checking accounts typically don't earn interest
+    public void endOfMonth() {
+        // No interest applied for Checking Account
     }
 }
 
@@ -84,13 +84,13 @@ class SavingsAccount extends Account {
     }
 
     @Override
-    public void applyMonthlyInterest() {
+    public void endOfMonth() {
         LocalDate currentDate = LocalDate.now();
         if (currentDate.getMonthValue() != lastInterestDate.getMonthValue() || 
             currentDate.getYear() != lastInterestDate.getYear()) {
-            double interest = balance * (interestRate / 12);
+            double interest = balance * (interestRate / 12); // Monthly interest
             balance += interest;
-            transactionHistory.add("Monthly interest applied: " + interest);
+            transactionHistory.add("Interest: " + interest);
             lastInterestDate = currentDate;
         }
     }
@@ -128,6 +128,10 @@ class User {
         return null;
     }
 
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
     public double getTotalBalance() {
         double total = 0.0;
         for (Account account : accounts) {
@@ -147,12 +151,6 @@ class User {
             }
         }
         return false;
-    }
-
-    public void applyMonthlyInterestToAllAccounts() {
-        for (Account account : accounts) {
-            account.applyMonthlyInterest();
-        }
     }
 }
 
@@ -174,12 +172,6 @@ class Bank {
         }
         return null;
     }
-
-    public void applyMonthlyInterestForAllUsers() {
-        for (User user : users.values()) {
-            user.applyMonthlyInterestToAllAccounts();
-        }
-    }
 }
 
 public class Main {
@@ -190,40 +182,31 @@ public class Main {
         User user1 = bank.login("user1", "pass1");
         if (user1 != null) {
             user1.addAccount(new CheckingAccount("123456", 500));
-            user1.addAccount(new SavingsAccount("789101", 0.05)); // 5% annual interest rate
+            user1.addAccount(new SavingsAccount("789101", 0.01)); // 1% annual interest
 
             Account checkingAccount = user1.getAccount("123456");
+            checkingAccount.deposit(500);
+            System.out.println("Checking Account balance: " + checkingAccount.getBalance());
+
+            checkingAccount.withdraw(200);
+            System.out.println("Checking Account balance after withdrawal: " + checkingAccount.getBalance());
+
             Account savingsAccount = user1.getAccount("789101");
+            savingsAccount.deposit(1000);
+            System.out.println("Savings Account balance: " + savingsAccount.getBalance());
 
-            checkingAccount.deposit(1000);
-            savingsAccount.deposit(2000);
-
-            System.out.println("Checking balance: " + checkingAccount.getBalance());
-            System.out.println("Savings balance: " + savingsAccount.getBalance());
-
-            checkingAccount.withdraw(1200);
-            savingsAccount.withdraw(500);
-
-            System.out.println("Checking balance after withdrawal: " + checkingAccount.getBalance());
-            System.out.println("Savings balance after withdrawal: " + savingsAccount.getBalance());
-
-            // Simulate passing of a month
-            bank.applyMonthlyInterestForAllUsers();
-
-            System.out.println("Checking balance after a month: " + checkingAccount.getBalance());
-            System.out.println("Savings balance after a month: " + savingsAccount.getBalance());
-
-            System.out.println("Checking transaction history:");
-            for (String transaction : checkingAccount.getTransactionHistory()) {
-                System.out.println(transaction);
-            }
-
-            System.out.println("Savings transaction history:");
-            for (String transaction : savingsAccount.getTransactionHistory()) {
-                System.out.println(transaction);
-            }
+            user1.transfer("789101", "123456", 500);
+            System.out.println("Checking Account balance after transfer: " + checkingAccount.getBalance());
+            System.out.println("Savings Account balance after transfer: " + savingsAccount.getBalance());
 
             System.out.println("Total balance: " + user1.getTotalBalance());
+
+            // End of month interest
+            for (Account account : user1.getAccounts()) {
+                account.endOfMonth();
+            }
+
+            System.out.println("Total balance after end of month: " + user1.getTotalBalance());
         } else {
             System.out.println("Login failed");
         }
