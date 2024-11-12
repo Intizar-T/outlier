@@ -1,4 +1,3 @@
-```sql
 WITH airport_details AS (
   SELECT
     lookup_region.country_iso_code_2 AS country_code, 
@@ -42,4 +41,3 @@ ORDER BY
   percent_baseline.percent_of_baseline DESC,
   airport_details.date
 LIMIT 1000;
-```
